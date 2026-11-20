@@ -38,8 +38,36 @@ def tokenize_move(move):
 
     return one_hot_start_cols + one_hot_start_rows + one_hot_end_cols + one_hot_end_rows
 
+def tokenize_board(board):
+
+    from bulletchess import WHITE, BLACK, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING
+    from bulletchess import  SQUARES
+
+    SQUARE_INDEX = {sq: i for i, sq in enumerate(SQUARES)}
+
+    piece_boards = []
+
+    for color in (WHITE, BLACK):
+        for piece in (PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING):
+
+            # Create a 8*8 board for each type of piece, and make the squares
+            # the pieces are on 1
+
+            piece_board = [0] * 64
+            for square in board[color, piece]:
+                piece_board[SQUARE_INDEX[square]] = 1
+
+            piece_boards.append(piece_board)
+
+    return piece_boards
+
 def tokenize_data(games):
-    tokenized_games = []
+    """
+    Returns tokenized_boards and tokenized_moves as lists
+    """
+
+    tokenized_moves = []
+    tokenized_boards = []
 
     for game in games:
 
@@ -59,6 +87,10 @@ def tokenize_data(games):
 
             tokenized_game.append(tokenize_move(move))
 
-        tokenized_games.append(tokenized_game)
+            tokenized_boards.append(tokenize_board(board))
 
-    return tokenized_games
+
+        tokenized_moves.append(tokenized_game)
+
+    return tokenized_boards, tokenized_moves
+
