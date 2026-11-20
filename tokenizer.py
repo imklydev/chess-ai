@@ -38,6 +38,21 @@ def tokenize_move(move):
 
     return one_hot_start_cols + one_hot_start_rows + one_hot_end_cols + one_hot_end_rows
 
+def untokenize_move(move):
+    one_hot_start_cols = move[:8]
+    one_hot_start_rows = move[8:16]
+    one_hot_end_cols = move[16:24]
+    one_hot_end_rows = move[24:32]
+
+    cols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+
+    start_col = cols[one_hot_start_cols.index(1)]
+    start_row = one_hot_start_rows.index(1) + 1
+    end_col = cols[one_hot_end_cols.index(1)]
+    end_row = one_hot_end_rows.index(1) + 1
+
+    return start_col + str(start_row) + end_col + str(end_row)
+
 def tokenize_board(board):
 
     from bulletchess import WHITE, BLACK, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING
