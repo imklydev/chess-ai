@@ -121,6 +121,10 @@ def tokenize_data(games):
             # SAN format move (Nf3, d4, etc.)
             san_move = Move.from_san(move, board)
 
+            # Add the board state BEFORE applying the move, so the inputs and outputs make sense when training
+            tokenized_boards_for_this_game.append(tokenize_board(board))
+
+
             board.apply(san_move)
 
             # UCI format move (d2d4, etc.)
@@ -128,7 +132,6 @@ def tokenize_data(games):
 
             tokenized_game.append(tokenize_move(move))
 
-            tokenized_boards_for_this_game.append(tokenize_board(board))
 
 
         tokenized_moves.append(tokenized_game)
