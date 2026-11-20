@@ -87,6 +87,7 @@ def tokenize_data(games):
     for game in games:
 
         tokenized_game = []
+        tokenized_boards_for_this_game = []
 
         board = Board()
 
@@ -102,10 +103,11 @@ def tokenize_data(games):
 
             tokenized_game.append(tokenize_move(move))
 
-            tokenized_boards.append(tokenize_board(board))
+            tokenized_boards_for_this_game.append(tokenize_board(board))
 
 
         tokenized_moves.append(tokenized_game)
+        tokenized_boards.append(tokenized_boards_for_this_game)
 
     return tokenized_boards, tokenized_moves
 
