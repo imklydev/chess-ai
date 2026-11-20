@@ -76,6 +76,31 @@ def tokenize_board(board):
 
     return piece_boards
 
+def untokenize_board(tokenized_board):
+
+    from bulletchess import WHITE, BLACK, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING
+    from bulletchess import Piece, SQUARES
+
+    board = Board.empty()
+
+    piece_types = [
+        (color, piece)
+        for color in (WHITE, BLACK)
+        for piece in (PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING)
+    ]
+
+    # 12 different piece types
+    for i in range(12):
+
+        piece_indexes = [idx for idx, x in enumerate(tokenized_board[i]) if x == 1]
+
+        for piece_index in piece_indexes:
+            board[SQUARES[piece_index]] = Piece(piece_types[i][0], piece_types[i][1])
+
+    return board
+
+
+
 def tokenize_data(games):
     """
     Returns tokenized_boards and tokenized_moves as lists
