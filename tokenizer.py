@@ -78,6 +78,9 @@ def tokenize_board(board):
 
 def untokenize_board(tokenized_board):
 
+    # Drop turn
+    tokenized_board = tokenized_board[1:]
+
     from bulletchess import WHITE, BLACK, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING
     from bulletchess import Piece, SQUARES
 
@@ -116,13 +119,18 @@ def tokenize_data(games):
 
         board = Board()
 
+        # Black to move: turn = 0
+        # White to move: turn = 1
+        turn = 0
         for move in game:
+            turn = 1 - turn
 
             # SAN format move (Nf3, d4, etc.)
             san_move = Move.from_san(move, board)
 
             # Add the board state BEFORE applying the move, so the inputs and outputs make sense when training
-            tokenized_boards_for_this_game.append(tokenize_board(board))
+            # Also add a (turn) variable
+            tokenized_boards_for_this_game.append([turn] + tokenize_board(board))
 
 
             board.apply(san_move)
