@@ -3,8 +3,14 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
+import time
+
 
 def train_model(model, epochs, inputs, outputs):
+
+    start_time = time.perf_counter()
+
+    print("Training the model... (might take some time, get comfy!)")
 
     optimizer = optim.Adam(model.parameters())
     loss_fn = nn.CrossEntropyLoss().to(device)
@@ -28,5 +34,10 @@ def train_model(model, epochs, inputs, outputs):
         
         if (epoch+1) % 10 == 0:
             print(f"Epoch {epoch+1}: loss = {sum(losses) / len(losses)}")
+
+
+    end_time = time.perf_counter()
+
+    print(f"Trained Chess AI from scratch, on the Lichess database, in {end_time - start_time:.1f}s")
 
     return model

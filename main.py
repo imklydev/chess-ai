@@ -1,3 +1,5 @@
+should_train_model = True if input("Should train the model from scratch? (y/N): ") == 'y' else False
+
 from download_training_data import get_training_data
 
 training_data = get_training_data()
@@ -22,10 +24,17 @@ training_outputs = torch.tensor(np.array(training_outputs), dtype=torch.float32)
 from model import model, save_model, load_model
 from process_data import tensor_move_to_tokenized_tensor_move
 
-from train import train_model
+if should_train_model:
 
-model = train_model(model, 100, training_inputs, training_outputs)
+    from train import train_model
 
-save_model(model)
+    model = train_model(model, 100, training_inputs, training_outputs)
 
+    save_model(model)
+
+else:
+
+    model = load_model(model)
+    
+print("The first move in a chess game, played by white, predicted by the model:")
 print(untokenize_move(tensor_move_to_tokenized_tensor_move(model(training_inputs[0])).tolist()))
