@@ -15,7 +15,7 @@ Well, we get a dumber engine (at least, in my case), but a cool project.
 
 A chess position fed to the model is first decomposed into 12 boards (one for each piece type and color). It also includes a single turn variable (1 for white, 0 for black). Then everything gets flattened into a 1D tensor with 769 values.
 
-![Image showing how board decomposition works for the model](readme-images/image.png)
+![Image showing how board decomposition works for the model](readme-files/image.png)
 <i>Can you find the mate in 3? (White to move, answer at the bottom)</i>
 
 The model returns a 32 element 1D tensor. This is an encoded UCI style move (e2e4, d2d4, ...), split into four groups of 8 elements:
@@ -29,37 +29,23 @@ Each group of 8 acts like a one-hot vector, so the highest value in the group se
 
 The four selected values are then combined into a UCI string, which is converted to a move and applied to the board.
 
+Since the model can *very* confidently output moves that aren't legal, the output is masked with the legal moves provided by bulletchess. Every legal move is scored using the model's values for its start/destination column and row, and the highest-scoring legal move is played.
+
 ## Current results
 
-Not great, but not nothing either. After training on a small portion of the dataset for 1000 epochs, this is a game I got (both sides being played by the model):
+After training on a small portion of the dataset for 50 epochs, this is a game I got (both sides being played by the model):
 
-```
-1. e4 e5
-2. Nf3 Nc6
-3. Bc4 Nf6
-4. d3 Bf8-e6 (illegal)
-5. Bc1-c3 (illegal) b6
-```
+![Model playing itself](readme-files/model_vs_model.gif)
 
-Another game (with some tweaked model params, and a smaller number of epochs):
+This is a huge improvement from previous attempts, because of masking the model's output. Before, the model would confidently play an illegal move and the whole game would crash. Now, every move it picks is guaranteed to be legal, because the output is filtered through the legal move list from bulletchess first.
 
-```
-1. e4 e5
-2. Nf3 Nc6
-3. Bc4 Nf6
-4. d3 f7-e6 (illegal)
-5. O-O Bc5
-```
-
-If you have a keen eye, you might have noticed that the model made 2 illegal moves in the first 5 moves of the first game... I'm working on experimenting with fixes for that soon :p
+Also, if you know your chess, you might notice that the opening played is the Italian Game, one of the most common openings out there. It makes sense that the model memorized it, since it saw it a ton. My next step is to see how it handles more obscure openings and positions.
 
 ## Future plans
 
-Currently, the first 2-3 moves played by the engine are perfect. Because it saw those specific positions so many times, it memorized them. After that, the model produces illegal moves almost immediately.
-
 Ideas for improving the model:
 
-- Mask illegal moves at inference time, using the legal move list from the bulletchess library to filter the model's output and pick the highest-scoring legal move.
+- ~~Mask illegal moves at inference time, using the legal move list from the bulletchess library to filter the model's output and pick the highest-scoring legal move.~~ **Done!**
 - Stop flattening the inputs and use a Conv2D layer instead, so the model can pick up spatial patterns more easily. (Slightly challenging because of the lone turn input: it could be added as an extra constant channel of 1s or 0s.)
 - Add an interactive test where you can play against the model in a pywebview window, instead of just seeing how it plays against itself
 

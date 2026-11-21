@@ -26,6 +26,35 @@ class ChessAI(nn.Module):
     def forward(self, x):
         return self.model(x)
 
+def pick_best_predicted_legal_move(output: torch.Tensor, board) -> str:
+    """Return the highest-scoring predicted legal move (as a UCI string) for the board"""
+
+    import math
+
+    # 32 outputs -> 4 groups of 8 (start col, start row, dest col, dest row)
+    log_probs = torch.log_softmax(output.view(4, 8), dim=1).tolist()
+
+
+    best_uci, best_score = None, -math.inf
+    for m in board.legal_moves():
+        uci = m.uci()
+        score = (
+            log_probs[0][ord(uci[0]) - ord('a')]   # start column
+            + log_probs[1][int(uci[1]) - 1]        # start row
+            + log_probs[2][ord(uci[2]) - ord('a')] # dest column
+            + log_probs[3][int(uci[3]) - 1]        # dest row
+        )
+
+        # Promotions share the same 4 chars; prefer the queen as a tie-break
+        if len(uci) == 5 and uci[4] == 'q':
+            score += 1e-6
+        
+        if score > best_score:
+            best_uci, best_score = uci, score
+    
+    return best_uci
+
+
 model = ChessAI()
 model = model.to(device)
 

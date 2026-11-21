@@ -12,6 +12,8 @@ import sys, os
 
 import torch
 
+from model import pick_best_predicted_legal_move
+
 def model_vs_model_chess_game(moves):
     print(f"The first {moves} moves of a Chess game, played by the model on both sides.")
 
@@ -59,11 +61,11 @@ def model_vs_model_chess_game(moves):
 
         window.events.closed += on_closed
 
-        time.sleep(1)
 
     def play():
         nonlocal moves
 
+        time.sleep(15)
         # Whites turn = 1
         turn = 1
         for i in range(moves):
@@ -71,11 +73,13 @@ def model_vs_model_chess_game(moves):
             tokenized_board = torch.tensor(flatten_board([[turn]] + tokenize_board(board)), dtype=torch.float32).to(device)
             turn = 1 - turn
 
-            move = untokenize_move(tensor_move_to_tokenized_tensor_move(model(tokenized_board)).tolist())
+            move = pick_best_predicted_legal_move(model(tokenized_board).cpu(), board)
 
             board.apply(Move.from_uci(move))
 
             print(board)
+
+
 
 
             if should_display_game:
