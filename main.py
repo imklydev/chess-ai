@@ -24,3 +24,8 @@ from model import model
 from process_data import tensor_move_to_tokenized_tensor_move
 
 print(untokenize_move(tensor_move_to_tokenized_tensor_move(model(training_inputs[0])).tolist()))
+
+from train import train_model
+
+model = train_model(model, 100, training_inputs, training_outputs)
+
