@@ -22,3 +22,11 @@ class ChessAI(nn.Module):
         return self.model(x)
 
 model = ChessAI()
+
+def save_model(model):
+    torch.save(model.state_dict(), "model.pth")
+
+def load_model(model):
+    model.load_state_dict(torch.load("model.pth", weights_only=True))
+
+    return model

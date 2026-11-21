@@ -20,12 +20,15 @@ import torch
 training_inputs = torch.tensor(np.array(training_inputs), dtype=torch.float32)
 training_outputs = torch.tensor(np.array(training_outputs), dtype=torch.float32)
 
-from model import model
+from model import model, save_model, load_model
 from process_data import tensor_move_to_tokenized_tensor_move
 
 print(untokenize_move(tensor_move_to_tokenized_tensor_move(model(training_inputs[0])).tolist()))
 
 from train import train_model
 
-model = train_model(model, 100, training_inputs, training_outputs)
+model = train_model(model, 20, training_inputs, training_outputs)
 
+save_model(model)
+
+print(untokenize_move(tensor_move_to_tokenized_tensor_move(model(training_inputs[0])).tolist()))
