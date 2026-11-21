@@ -1,4 +1,4 @@
-import torch
+from device import device
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
@@ -7,10 +7,10 @@ from torch.utils.data import DataLoader, TensorDataset
 def train_model(model, epochs, inputs, outputs):
 
     optimizer = optim.Adam(model.parameters())
-    loss_fn = nn.CrossEntropyLoss()
+    loss_fn = nn.CrossEntropyLoss().to(device)
 
     dataset = TensorDataset(inputs, outputs)
-    dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
+    dataloader = DataLoader(dataset, batch_size=1024, shuffle=True)
 
     for epoch in range(epochs):
         losses = []

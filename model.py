@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from device import device
 
 from process_data import tensor_move_to_tokenized_tensor_move
 
@@ -22,6 +23,7 @@ class ChessAI(nn.Module):
         return self.model(x)
 
 model = ChessAI()
+model = model.to(device)
 
 def save_model(model):
     torch.save(model.state_dict(), "model.pth")
