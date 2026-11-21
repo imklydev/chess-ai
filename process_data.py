@@ -23,8 +23,6 @@ def flatten_inputs_and_outputs(inputs, outputs):
         for sample in inputs
     ])
 
-    print(flattened_inputs)
-
     return flattened_inputs, outputs
 
 def tensor_move_to_tokenized_tensor_move(tensor_move):

@@ -11,7 +11,7 @@ import numpy as np
 
 training_inputs, training_outputs = get_inputs_and_outputs(tokenized_boards, tokenized_moves)
 
-print(untokenize_board(training_inputs[0]), "\n", untokenize_move(training_outputs[0]), sep="")
+print(untokenize_board(training_inputs[0]), untokenize_move(training_outputs[0]), sep="")
 
 training_inputs, training_outputs = flatten_inputs_and_outputs(training_inputs, training_outputs)
 
@@ -21,5 +21,6 @@ training_inputs = torch.tensor(np.array(training_inputs), dtype=torch.float32)
 training_outputs = torch.tensor(np.array(training_outputs), dtype=torch.float32)
 
 from model import model
+from process_data import tensor_move_to_tokenized_tensor_move
 
-print(untokenize_move(model(training_inputs[0]).tolist()))
+print(untokenize_move(tensor_move_to_tokenized_tensor_move(model(training_inputs[0])).tolist()))

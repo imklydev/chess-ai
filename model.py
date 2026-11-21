@@ -19,6 +19,6 @@ class ChessAI(nn.Module):
 
 
     def forward(self, x):
-        return tensor_move_to_tokenized_tensor_move(self.model(x))
+        return self.model(x)
 
 model = ChessAI()
