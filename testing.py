@@ -8,6 +8,8 @@ from device import device
 from webview import create_window, start
 import time
 
+import sys, os
+
 import torch
 
 def model_vs_model_chess_game(moves):
@@ -41,12 +43,11 @@ def model_vs_model_chess_game(moves):
 
 
     if(should_display_game):
-
-        is_window_closed = False
-
+        
         def on_closed():
-            nonlocal is_window_closed
-            is_window_closed = True
+            print("Window closed, ending this test...")
+            sys.stdout.flush()
+            os._exit(0)
 
         page = (
             '<body style="margin:0">'
@@ -57,6 +58,8 @@ def model_vs_model_chess_game(moves):
         window = create_window(f"Model vs Model Chess game - Move {0}", html=page)
 
         window.events.closed += on_closed
+
+        time.sleep(1)
 
     def play():
         nonlocal moves
@@ -76,16 +79,14 @@ def model_vs_model_chess_game(moves):
 
 
             if should_display_game:
+
                 window.set_title(f"Model vs Model Chess game - Move {i+1}")
 
                 window.evaluate_js(
                     f"document.getElementById('b').innerHTML = `{board_to_html(board)}`"
                 )
 
-                if(is_window_closed):
-                    return
-
-                time.sleep(1.5)
+                time.sleep(1)
 
     if should_display_game:
         # Block untill window is closed
