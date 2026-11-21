@@ -28,7 +28,7 @@ if should_train_model:
 
     from train import train_model
 
-    model = train_model(model, 100, training_inputs, training_outputs)
+    model = train_model(model, 1000, training_inputs, training_outputs)
 
     save_model(model)
 

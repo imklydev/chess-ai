@@ -33,7 +33,7 @@ def train_model(model, epochs, inputs, outputs):
                 losses.append(loss.item())
         
         if (epoch+1) % 10 == 0:
-            print(f"Epoch {epoch+1}: loss = {sum(losses) / len(losses)}")
+            print(f"Epoch {epoch+1}/{epochs}: loss = {sum(losses) / len(losses)}")
 
 
     end_time = time.perf_counter()
