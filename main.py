@@ -35,6 +35,11 @@ if should_train_model:
 else:
 
     model = load_model(model)
-    
-print("The first move in a chess game, played by white, predicted by the model:")
-print(untokenize_move(tensor_move_to_tokenized_tensor_move(model(training_inputs[0])).tolist()))
+
+from testing import model_vs_model_chess_game
+
+print()
+print()
+print("--Testing----")
+print()
+model_vs_model_chess_game(20)

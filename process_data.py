@@ -14,6 +14,14 @@ def get_inputs_and_outputs(tokenized_boards, tokenized_moves):
 
     return inputs, outputs
 
+def flatten_board(board):
+
+    import numpy as np
+
+    flattened_board = np.concatenate([np.asarray(r) for r in board])
+
+    return flattened_board
+
 def flatten_inputs_and_outputs(inputs, outputs):
 
     import numpy as np
