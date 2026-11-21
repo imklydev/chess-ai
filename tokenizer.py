@@ -129,8 +129,8 @@ def tokenize_data(games):
             san_move = Move.from_san(move, board)
 
             # Add the board state BEFORE applying the move, so the inputs and outputs make sense when training
-            # Also add a (turn) variable
-            tokenized_boards_for_this_game.append([turn] + tokenize_board(board))
+            # Also add a turn variable
+            tokenized_boards_for_this_game.append([[turn]] + tokenize_board(board))
 
 
             board.apply(san_move)
