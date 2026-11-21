@@ -21,6 +21,7 @@ def get_training_data():
         with open("training_data.txt", "r") as f:
             decompressed_data = f.read()
 
+    # Temporary
     # Use 150k chars from the data (not sure how many games this would be, maybe like <1k ?)
     decompressed_data = decompressed_data[:150000]
 
