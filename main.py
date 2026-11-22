@@ -25,7 +25,7 @@ if should_train_model:
 
     from train import train_model
 
-    model = train_model(model, 100, training_inputs, training_outputs)
+    model = train_model(model, 200, training_inputs, training_outputs)
 
     save_model(model)
 
@@ -33,10 +33,17 @@ else:
 
     model = load_model(model)
 
-from testing import model_vs_model_chess_game
+from testing import model_vs_model_chess_game, player_vs_model_chess_game
 
 print()
 print()
 print("--Testing----")
 print()
-model_vs_model_chess_game(50)
+print("Test 1: Model vs Model chess game (100 moves)")
+print("Test 2: Player vs Model chess game")
+test = input("What test should be ran? (1/2): ")
+
+if test == '1':
+    model_vs_model_chess_game(100)
+elif test == '2':
+    player_vs_model_chess_game()
