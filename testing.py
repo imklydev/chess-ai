@@ -1,8 +1,10 @@
-from process_data import tensor_move_to_tokenized_tensor_move, flatten_board
+from process_data import tensor_move_to_tokenized_tensor_move
 from model import model
 from tokenizer import untokenize_move, tokenize_board
 from bulletchess import Board, Move
 from device import device
+
+import numpy as np
 
 # For showing the board in a GUI instead of printing it
 from webview import create_window, start
@@ -65,12 +67,21 @@ def model_vs_model_chess_game(moves):
     def play():
         nonlocal moves
 
-        time.sleep(15)
+        # Wait for the window to fully initialize
+        time.sleep(1)
+
+
         # Whites turn = 1
         turn = 1
         for i in range(moves):
 
-            tokenized_board = torch.tensor(flatten_board([[turn]] + tokenize_board(board)), dtype=torch.float32).to(device)
+            turn_plane = np.full((1, 8, 8), turn, dtype=np.float32)  
+
+            tokenized_board = torch.tensor(np.concatenate([tokenize_board(board), turn_plane]), dtype=torch.float32).to(device)
+
+            # Make the board be of shape [1, 13, 8, 8] instead of [13, 8, 8]
+            tokenized_board = tokenized_board.unsqueeze(0)
+
             turn = 1 - turn
 
             move = pick_best_predicted_legal_move(model(tokenized_board).cpu(), board)
@@ -78,7 +89,6 @@ def model_vs_model_chess_game(moves):
             board.apply(Move.from_uci(move))
 
             print(board)
-
 
 
 

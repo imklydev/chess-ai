@@ -14,25 +14,6 @@ def get_inputs_and_outputs(tokenized_boards, tokenized_moves):
 
     return inputs, outputs
 
-def flatten_board(board):
-
-    import numpy as np
-
-    flattened_board = np.concatenate([np.asarray(r) for r in board])
-
-    return flattened_board
-
-def flatten_inputs_and_outputs(inputs, outputs):
-
-    import numpy as np
-
-    flattened_inputs = np.stack([
-        np.concatenate([np.asarray(r) for r in sample])
-        for sample in inputs
-    ])
-
-    return flattened_inputs, outputs
-
 def tensor_move_to_tokenized_tensor_move(tensor_move):
     import torch
 

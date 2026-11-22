@@ -41,12 +41,14 @@ This is a huge improvement from previous attempts, because of masking the model'
 
 Also, if you know your chess, you might notice that the opening played is the Italian Game, one of the most common openings out there. It makes sense that the model memorized it, since it saw it a ton. My next step is to see how it handles more obscure openings and positions.
 
+**Update:** Adding a Conv2D layer helped a lot. The model can now pick up common patterns, and it has started to understand and react to captures and simple attacks!
+
 ## Future plans
 
 Ideas for improving the model:
 
 - ~~Mask illegal moves at inference time, using the legal move list from the bulletchess library to filter the model's output and pick the highest-scoring legal move.~~ **Done!**
-- Stop flattening the inputs and use a Conv2D layer instead, so the model can pick up spatial patterns more easily. (Slightly challenging because of the lone turn input: it could be added as an extra constant channel of 1s or 0s.)
+- ~~Stop flattening the inputs and use a Conv2D layer instead, so the model can pick up spatial patterns more easily. (Slightly challenging because of the lone turn input: it could be added as an extra constant channel of 1s or 0s.)~~ **Done!**
 - Add an interactive test where you can play against the model in a pywebview window, instead of just seeing how it plays against itself
 
 ## Training dataset

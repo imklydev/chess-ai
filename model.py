@@ -8,11 +8,16 @@ class ChessAI(nn.Module):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.model = nn.Sequential(
-            # 12 piece types, each with an 8*8 board + 1 turn input
-            nn.Linear(12*8*8+1, 1024),
+        self.conv2D = nn.Sequential(
+            # 12 piece type channels + 1 turn channel
+            nn.Conv2d(in_channels=13, out_channels=16, kernel_size=3, padding=1),
             nn.ReLU(),
-            nn.Linear(1024, 2048),
+        )
+
+        self.fc = nn.Sequential(
+            nn.Flatten(),
+            # 16 output channels from self.conv2D of an 8*8 board
+            nn.Linear(16*8*8, 2048),
             nn.ReLU(),
             nn.Linear(2048, 512),
             nn.ReLU(),
@@ -24,7 +29,7 @@ class ChessAI(nn.Module):
 
 
     def forward(self, x):
-        return self.model(x)
+        return self.fc(self.conv2D(x))
 
 def pick_best_predicted_legal_move(output: torch.Tensor, board) -> str:
     """Return the highest-scoring predicted legal move (as a UCI string) for the board"""

@@ -1,6 +1,6 @@
 from bulletchess import Board, Move
 
-from download_training_data import get_training_data
+import numpy as np
 
 def tokenize_move(move):
     """
@@ -55,6 +55,7 @@ def untokenize_move(move):
 
 def tokenize_board(board):
 
+
     from bulletchess import WHITE, BLACK, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING
     from bulletchess import  SQUARES
 
@@ -72,7 +73,7 @@ def tokenize_board(board):
             for square in board[color, piece]:
                 piece_board[SQUARE_INDEX[square]] = 1
 
-            piece_boards.append(piece_board)
+            piece_boards.append(np.array(piece_board).reshape(8, 8))
 
     return piece_boards
 
@@ -93,7 +94,7 @@ def untokenize_board(tokenized_board):
     ]
 
     # 12 different piece types
-    for i in range(12):
+    for i in range(0, 12):
 
         piece_indexes = [idx for idx, x in enumerate(tokenized_board[i]) if x == 1]
 
@@ -129,9 +130,11 @@ def tokenize_data(games):
             san_move = Move.from_san(move, board)
 
             # Add the board state BEFORE applying the move, so the inputs and outputs make sense when training
-            # Also add a turn variable
-            tokenized_boards_for_this_game.append([[turn]] + tokenize_board(board))
+            # Also add a board reprezenting the turn
 
+            turn_plane = np.full((1, 8, 8), turn, dtype=np.float32)   
+
+            tokenized_boards_for_this_game.append(np.concatenate([tokenize_board(board), turn_plane], axis=0))
 
             board.apply(san_move)
 
