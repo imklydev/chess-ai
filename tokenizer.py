@@ -110,6 +110,8 @@ def tokenize_data(games):
     Returns tokenized_boards and tokenized_moves as lists
     """
 
+    print("Tokenizing game data...")
+
     tokenized_moves = []
     tokenized_boards = []
 

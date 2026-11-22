@@ -4,6 +4,7 @@ import zstandard as zstd
 
 def get_training_data():
     if not os.path.exists("training_data.txt"):
+        print("Downloading training data...")
 
         # Download chess game data
         r = requests.get("https://database.lichess.org/standard/lichess_db_standard_rated_2013-01.pgn.zst")
@@ -17,12 +18,14 @@ def get_training_data():
         with open("training_data.txt", "wb") as f:
             f.write(decompressed_data)
     else:
+        print("Reading downloaded training data...")
 
         with open("training_data.txt", "r") as f:
             decompressed_data = f.read()
 
+
     # Temporary
-    # Use 3M chars from the data (not sure how many games this would be, maybe like <30k ?)
+    # Use 3M chars from the data (around 3.5k games)
     decompressed_data = decompressed_data[:3000000]
 
     games = []
@@ -65,7 +68,6 @@ def get_training_data():
 
 
         games.append(moves_of_this_game)
-
 
     return games
 
