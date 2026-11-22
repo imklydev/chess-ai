@@ -13,7 +13,7 @@ Well, we get a dumber engine (at least, in my case), but a cool project.
 
 ## How it works
 
-A chess position fed to the model is first decomposed into 12 boards (one for each piece type and color). It also includes a single turn variable (1 for white, 0 for black). Then everything gets flattened into a 1D tensor with 769 values.
+A chess position fed to the model is first decomposed into 12 boards (one for each piece type and color). It also includes a turn feature board, a 8*8 board filled with either ones or zeros, so a Conv2D layer works as the first layer of the model.
 
 ![Image showing how board decomposition works for the model](readme-files/image.png)
 <i>Can you find the mate in 3? (White to move, answer at the bottom)</i>
