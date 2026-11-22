@@ -49,7 +49,7 @@ Ideas for improving the model:
 
 - ~~Mask illegal moves at inference time, using the legal move list from the bulletchess library to filter the model's output and pick the highest-scoring legal move.~~ **Done!**
 - ~~Stop flattening the inputs and use a Conv2D layer instead, so the model can pick up spatial patterns more easily. (Slightly challenging because of the lone turn input: it could be added as an extra constant channel of 1s or 0s.)~~ **Done!**
-- Add an interactive test where you can play against the model in a pywebview window, instead of just seeing how it plays against itself
+- ~~Add an interactive test where you can play against the model in a pywebview window, instead of just seeing how it plays against itself~~ **Done!**
 
 ## Training dataset
 
