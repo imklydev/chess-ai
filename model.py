@@ -2,8 +2,6 @@ import torch
 import torch.nn as nn
 from device import device
 
-from process_data import tensor_move_to_tokenized_tensor_move
-
 class ChessAI(nn.Module):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -1,27 +1,27 @@
 should_train_model = True if input("Should train the model from scratch? (y/N): ") == 'y' else False
 
-from download_training_data import get_training_data
-
-training_data = get_training_data()
-
-from tokenizer import tokenize_data, untokenize_move, untokenize_board
-
-tokenized_boards, tokenized_moves = tokenize_data(training_data)
-
-from process_data import get_inputs_and_outputs
-import numpy as np
-
-training_inputs, training_outputs = get_inputs_and_outputs(tokenized_boards, tokenized_moves)
-
-import torch
-from device import device
-
-training_inputs = torch.tensor(np.array(training_inputs), dtype=torch.float32).to(device)
-training_outputs = torch.tensor(np.array(training_outputs), dtype=torch.float32).to(device)
-
 from model import model, save_model, load_model
 
 if should_train_model:
+
+    from download_training_data import get_training_data
+
+    training_data = get_training_data()
+
+    from tokenizer import tokenize_data, untokenize_move, untokenize_board
+
+    tokenized_boards, tokenized_moves = tokenize_data(training_data)
+
+    from process_data import get_inputs_and_outputs
+    import numpy as np
+
+    training_inputs, training_outputs = get_inputs_and_outputs(tokenized_boards, tokenized_moves)
+
+    import torch
+    from device import device
+
+    training_inputs = torch.tensor(np.array(training_inputs), dtype=torch.float32).to(device)
+    training_outputs = torch.tensor(np.array(training_outputs), dtype=torch.float32).to(device)
 
     from train import train_model
 
