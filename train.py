@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
+import torch
+
 import time
 
 
@@ -17,6 +19,9 @@ def train_model(model, epochs, inputs, outputs):
 
     dataset = TensorDataset(inputs, outputs)
     dataloader = DataLoader(dataset, batch_size=1024, shuffle=True)
+
+    if(device == torch.device("cpu")):
+        print("\033[33mWARNING: Training on the CPU. Train times might be astronomical...\033[0m")
 
     for epoch in range(epochs):
         losses = []
