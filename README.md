@@ -39,7 +39,7 @@ After training on a small portion of the dataset for 50 epochs, this is a game I
 
 This is a huge improvement from previous attempts, because of masking the model's output. Before, the model would confidently play an illegal move and the whole game would crash. Now, every move it picks is guaranteed to be legal, because the output is filtered through the legal move list from bulletchess first.
 
-Also, if you know your chess, you might notice that the opening played is the Italian Game, one of the most common openings out there. It makes sense that the model memorized it, since it saw it a ton. My next step is to see how it handles more obscure openings and positions.
+Most openings are memorized by the model perfectly, but it completely breaks in the middlegame, where blunders and nonsense moves become much more common. After just 5 full moves of a chess game, there are **69 trillion** possible positions, so the model can't possibly memorize them all.
 
 **Update:** Adding a Conv2D layer helped a lot. The model can now pick up common patterns, and it has started to understand and react to captures and simple attacks!
 
